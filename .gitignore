@@ -1,0 +1,36 @@
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE and editor files
+.vscode/
+.idea/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+
+# Environment and config
+.env
+.env.local
+config/database.php
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+
+# Node modules (if added later)
+node_modules/
+package-lock.json
+
+# Build and cache
+/vendor/
+composer.lock
+.cache/
+
+# Setup/test files
+setup.php
+test_db.php
