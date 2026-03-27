@@ -1,6 +1,5 @@
 # SkillSync - Student Internship Matching System
 
-**Version:** 2.0 - MySQL Integration  
 **Status:** ✅ Ready for Production Setup  
 **Last Updated:** March 28, 2026
 
