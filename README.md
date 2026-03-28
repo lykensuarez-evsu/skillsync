@@ -1,5 +1,8 @@
 # SkillSync - Internship Matching System
 
+**Status:** ✅ Ready for Production Setup  
+**Last Updated:** March 28, 2026
+
 A web app that matches students with internship opportunities based on their skills and coursework. Built for EVSU IT students as a capstone project.
 
 ## What This Does
