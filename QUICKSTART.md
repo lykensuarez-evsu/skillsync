@@ -1,103 +1,47 @@
-# SkillSync - Quick Start Guide (MySQL Implementation)
+# Quick Setup
 
-## What Changed?
+Don't want to read the full README? Here's the fastest way to get this running.
 
-Your SkillSync application has been **fully migrated from localStorage to MySQL database**. Here's what was done:
+## 1. Put Files on Your Server
 
-### Changes Made:
+Copy the `skillsync` folder to:
+- XAMPP: `C:\xampp\htdocs\skillsync`  
+- WAMP: `C:\wamp64\www\skillsync`
 
-1. **Database Layer** (`config/database.php`)
-   - MySQL connection configuration
-   - Handles all database connectivity
+## 2. Set Up Database
 
-2. **API Endpoints** 
-   - `api/students.php` - Full CRUD operations for students
-   - `api/internships.php` - Full CRUD operations for internships
-   - All endpoints return JSON responses
+Go to http://localhost/phpmyadmin and:
+1. Click the SQL tab
+2. Copy everything from `database/setup.sql`
+3. Paste it in and click Go
 
-3. **JavaScript Updates** (`assets/js/app.js`)
-   - Replaced `localStorage` calls with `fetch()` API calls
-   - All data operations now go through REST endpoints
-   - Data automatically persists in database
+Done. You now have 3 students and 4 internships loaded.
 
-4. **Database Schema** (`database/setup.sql`)
-   - Students table with demo data
-   - Internships table with demo data
-   - Auto-increment primary keys
-   - Proper indexes for performance
+## 3. Open It
 
-5. **Updated Footer** (`includes/footer.php`)
-   - Removed localStorage data injection
-   - Now loads all data from API
+http://localhost/skillsync
 
----
+## 4. Try It Out
 
-## Setup Instructions (5 Minutes)
+- Pick a student from the dropdown to see their personalized matches
+- Click "Admin View" and log in with `admin` / `skillsync123` to add/edit records
 
-### Step 1: Ensure MySQL is Running
-```bash
-# Check if MySQL is running
-mysql --version
+## Troubleshooting
 
-# If using XAMPP/WAMP, start Apache and MySQL
-```
+**MySQL not connecting?**
+- Make sure MySQL is running (XAMPP control panel)
+- Check `config/database.php` has the right credentials
 
-### Step 2: Run Database Setup
-**Method A: phpMyAdmin (Easiest)**
-1. Open phpMyAdmin: `http://localhost/phpmyadmin`
-2. Click "SQL" tab
-3. Copy all content from `database/setup.sql`
-4. Paste into SQL editor and click "Go"
+**No data showing?**
+- Did you run the SQL setup? Check phpMyAdmin to verify the database exists
+- Open browser console (F12) to see if there are JavaScript errors
 
-**Method B: Command Line**
-```bash
-mysql -u root -p < database/setup.sql
-```
+**Can't log into admin?**
+- Username: `admin` (lowercase)
+- Password: `skillsync123` (exact)
 
-### Step 3: Update Config (if needed)
-Edit `config/database.php`:
-```php
-const DB_HOST = 'localhost';      // MySQL host
-const DB_USER = 'root';           // MySQL username
-const DB_PASSWORD = '';           // MySQL password (usually empty for local)
-const DB_NAME = 'skillsync';      // Database name
-```
+That's seriously it. If you want details on how everything works, read README.md.
 
-### Step 4: Test
-1. Navigate to your SkillSync URL
-2. Check browser Console (F12) - should see: "SkillSync initialized with MySQL database backend"
-3. Data should load from database automatically
-
----
-
-## Architecture Overview
-
-```
-User Interface (HTML)
-    ↓
-JavaScript (assets/js/app.js)
-    ↓ fetch()
-REST API (api/students.php, api/internships.php)
-    ↓
-PHP Database Layer (config/database.php)
-    ↓
-MySQL Database
-    (skillsync_students, skillsync_internships tables)
-```
-
----
-
-## API Endpoints Reference
-
-### Get All Students
-```bash
-GET /api/students.php?action=all
-# Returns: Array of student objects
-```
-
-### Get All Internships
-```bash
-GET /api/internships.php?action=all
 # Returns: Array of internship objects
 ```
 

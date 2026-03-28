@@ -34,3 +34,10 @@ composer.lock
 # Setup/test files
 setup.php
 test_db.php
+
+# Presentation files
+ELEVATOR_PITCH.md
+ELEVATOR_PITCH.docx
+TECHNICAL_QA.md
+TECHNICAL_QA.docx
+TECHNICAL_CONTRIBUTIONS.md

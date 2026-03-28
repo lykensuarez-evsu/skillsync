@@ -123,13 +123,16 @@ function addInternship() {
     global $conn;
     $data = json_decode(file_get_contents('php://input'), true);
     
-    if (!$data || !isset($data['id'], $data['title'], $data['company'])) {
+    // Handle both 'id' and 'internship_id' field names
+    $id_field = $data['internship_id'] ?? $data['id'] ?? null;
+    
+    if (!$data || !$id_field || !isset($data['title'], $data['company'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Missing required fields']);
         return;
     }
     
-    $id = $conn->real_escape_string($data['id']);
+    $id = $conn->real_escape_string($id_field);
     $title = $conn->real_escape_string($data['title']);
     $company = $conn->real_escape_string($data['company']);
     $department = $conn->real_escape_string($data['department'] ?? '');
@@ -184,13 +187,19 @@ function updateInternship() {
     global $conn;
     $data = json_decode(file_get_contents('php://input'), true);
     
-    if (!$data || !isset($data['id'])) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Missing id']);
-        return;
+    if (!$data || !isset($data['id'], $data['student_id'])) {
+        // Updated to handle both 'id' and 'internship_id' field names
+        $id_field = $data['internship_id'] ?? $data['id'] ?? null;
+        if (!$data || !$id_field) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing id']);
+            return;
+        }
+    } else {
+        $id_field = $data['id'];
     }
     
-    $id = $conn->real_escape_string($data['id']);
+    $id = $conn->real_escape_string($id_field);
     $updates = [];
     
     if (isset($data['title'])) {

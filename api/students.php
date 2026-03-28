@@ -121,13 +121,16 @@ function addStudent() {
     global $conn;
     $data = json_decode(file_get_contents('php://input'), true);
     
-    if (!$data || !isset($data['id'], $data['name'], $data['program'])) {
+    // Handle both 'id' and 'student_id' field names
+    $id_field = $data['student_id'] ?? $data['id'] ?? null;
+    
+    if (!$data || !$id_field || !isset($data['name'], $data['program'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Missing required fields']);
         return;
     }
     
-    $id = $conn->real_escape_string($data['id']);
+    $id = $conn->real_escape_string($id_field);
     $name = $conn->real_escape_string($data['name']);
     $program = $conn->real_escape_string($data['program']);
     $year_level = intval($data['year_level'] ?? 1);
@@ -180,13 +183,16 @@ function updateStudent() {
     global $conn;
     $data = json_decode(file_get_contents('php://input'), true);
     
-    if (!$data || !isset($data['id'])) {
+    // Handle both 'id' and 'student_id' field names
+    $id_field = $data['student_id'] ?? $data['id'] ?? null;
+    
+    if (!$data || !$id_field) {
         http_response_code(400);
         echo json_encode(['error' => 'Missing id']);
         return;
     }
     
-    $id = $conn->real_escape_string($data['id']);
+    $id = $conn->real_escape_string($id_field);
     $updates = [];
     
     if (isset($data['name'])) {

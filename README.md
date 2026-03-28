@@ -1,66 +1,186 @@
-# SkillSync - Student Internship Matching System
+# SkillSync - Internship Matching System
 
-**Version:** 2.0 - MySQL Integration  
-**Status:** ✅ Ready for Production Setup  
-**Last Updated:** March 28, 2026
+A web app that matches students with internship opportunities based on their skills and coursework. Built for EVSU IT students as a capstone project.
 
----
+## What This Does
 
-## 📋 Overview
+SkillSync helps students find internships that actually fit their skills and background. Instead of manually checking internships against your resume, the app does the matching for you - scores each opportunity and ranks them by how well they fit.
 
-SkillSync is a **student internship matching system** that connects academic profiles with internship opportunities. This version uses **MySQL database** for persistent data storage instead of browser localStorage.
+Currently uses MySQL to store everything so data doesn't disappear when you close the browser.
 
-**Key Features:**
-- ✅ Student profile management with skills tracking
-- ✅ Internship opportunity listings with requirements
-- ✅ Intelligent matching algorithm (weights: skills 50%, subjects 25%, GPA 25%, track 5%)
-- ✅ Admin panel for data management
-- ✅ REST API backend for scalability
-- ✅ Persistent MySQL database storage
-- ✅ Responsive design for all devices
+## Features
 
----
+- View student profiles with skills and coursework
+- Browse internship listings with requirements
+- Get personalized recommendations ranked by match percentage
+- Admin section to add/edit/delete records
+- REST API backend for data management
+- All data saved in MySQL database
 
-## 🚀 Quick Start (5 Minutes)
+## Quick Start
 
-### Prerequisites
-- MySQL server running (XAMPP, WAMP, MAMP, or standalone)
-- Web server with PHP support (Apache, Nginx)
-- Modern web browser
+### What You Need
+
+- XAMPP, WAMP, or any local server with PHP and MySQL
+- Just a browser to use it
 
 ### Setup
 
-**Step 1: Initialize Database**
-```bash
-# Option A: phpMyAdmin
-# 1. Open http://localhost/phpmyadmin
-# 2. Click SQL tab
-# 3. Copy-paste contents of database/setup.sql
-# 4. Click Go
+1. **Put files in the web folder**
+   - XAMPP: `C:\xampp\htdocs\skillsync`
+   - WAMP: `C:\wamp64\www\skillsync`
 
-# Option B: Command Line
-mysql -u root -p < database/setup.sql
+2. **Initialize the database**
+
+   Using phpMyAdmin (easiest):
+   - Go to http://localhost/phpmyadmin
+   - Open the SQL tab
+   - Paste everything from `database/setup.sql`
+   - Click Go
+
+   Or from command line:
+   ```
+   mysql -u root -p < database/setup.sql
+   ```
+
+3. **Open http://localhost/skillsync**
+
+That's it. Three demo students and four internships are already loaded.
+
+## How It Works
+
+Students have:
+- Name, program, year level, GPA
+- Skills (like "PHP", "JavaScript", etc)
+- Completed subjects (like "Database Systems")
+- Preferred internship track
+
+Internships have:
+- Title, company, location, work mode
+- Required skills
+- Preferred coursework
+- Minimum GPA + track preference
+
+The matching algorithm scores each internship:
+- 50% based on matching skills
+- 25% based on matching coursework
+- 25% based on GPA requirements
+- 5% bonus if career track matches
+
+Rankings show best matches first.
+
+## Using It
+
+**Student side:**
+1. Pick a student from the dropdown
+2. See their profile and all internship recommendations ranked by match score
+3. Browse all available internships
+
+**Admin side:**
+- Login with `admin` / `skillsync123`
+- Add, edit, or delete students and internships
+- Everything saves to the database
+
+## Structure
+
+```
+skillsync/
+├── index.php              Main page
+├── config/database.php    DB connection settings
+├── api/
+│   ├── students.php       API for student data
+│   └── internships.php    API for internship data
+├── database/
+│   └── setup.sql          Database schema + demo data
+├── includes/
+│   ├── header.php         Top of page
+│   └── footer.php         Bottom of page
+└── assets/
+    ├── css/style.css      Styling
+    └── js/app.js          Frontend logic
 ```
 
-**Step 2: Verify Configuration**
-```php
-// Edit config/database.php if needed
-const DB_HOST = 'localhost';
-const DB_USER = 'root';
-const DB_PASSWORD = '';
-const DB_NAME = 'skillsync';
-```
+## Database
 
-**Step 3: Open in Browser**
-```
-http://localhost/skillsync
-```
+6 tables:
+- `students` - Student info
+- `student_skills` - What skills each student has
+- `student_subjects` - What subjects they've completed
+- `internships` - Internship listings
+- `internship_skills` - Required skills per internship
+- `internship_subjects` - Preferred subjects per internship
 
-✅ Done! Data now persists in MySQL database.
+Demo data included:
+- 3 students (Alyssa, John, Mikaela)
+- 4 internships (Web Dev, QA, IT Support, API Integration)
 
----
+## API Endpoints
 
-## 📁 Project Structure
+The frontend talks to these:
+
+**Students:**
+- `GET /api/students.php?action=all` - Get all students
+- `GET /api/students.php?action=single&id=2021-001` - Get one
+- `POST /api/students.php` - Create new
+- `PUT /api/students.php` - Edit existing
+- `DELETE /api/students.php?id=2021-001` - Delete
+
+**Internships:**
+- Same pattern with `/api/internships.php`
+
+## Notes
+
+- Database credentials are in `config/database.php` (localhost, user: root, no password by default)
+- `setup.php` and `test_db.php` are just for debugging, can be deleted
+- Uses `mysqli` for database access
+- All input is escaped to prevent SQL injection
+- Doesn't use sessions or real authentication (this is a demo/prototype)
+
+## Demo Data
+
+**Students:**
+- Alyssa Mae Tan (2021-001) - Web Development track, GPA 1.68
+- John Carlo Reyes (2021-014) - Data and QA track, GPA 1.95
+- Mikaela Joy Dela Cruz (2021-026) - Systems and Support track, GPA 1.75
+
+**Internships:**
+- INT-100: Junior Web Development (Tacloban Digital Solutions)
+- INT-101: QA and Documentation (Eastern Tech Labs)
+- INT-102: IT Support (Visayas CampusNet)
+- INT-103: API Integration (Leyte Software House)
+
+Try selecting different students and see how the match scores change.
+
+## Troubleshooting
+
+**Data won't load:**
+- Make sure MySQL is running
+- Check if database/setup.sql has been run
+- Look in browser console (F12) for errors
+
+**Can't connect to database:**
+- Check MySQL is actually running
+- Default settings assume user "root" with no password
+- If different, edit `config/database.php`
+
+**API returns errors:**
+- Check server error logs
+- Make sure `api/` folder exists and has the `.php` files
+- Verify database tables exist in phpMyAdmin
+
+**Changes don't save:**
+- Check browser console for JavaScript errors
+- Verify the API returned success
+
+## Tech Stack
+
+- PHP 7+
+- MySQL
+- Vanilla JavaScript
+- HTML + CSS
+- REST API
+
+Pretty straightforward stack for a student project.
 
 ```
 skillsync/
